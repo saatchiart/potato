@@ -1,0 +1,23 @@
+{
+    "name": "mshindle/potato",
+    "description": "A simple ODM for couchbase",
+    "homepage": "http://github.com/mshindle/potato",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Shindle",
+            "email": "mike@saatchiart.com"
+        }
+    ],
+    "require": {
+        "php": ">= 5.4",
+        "ext-couchbase": ">= 2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.4"
+    },
+    "autoload": {
+        "psr-4": { "Potato\\": "src/Potato" }
+    }
+}
