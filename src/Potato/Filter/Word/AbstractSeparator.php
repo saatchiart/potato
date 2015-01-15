@@ -1,9 +1,9 @@
 <?php
 
-namespace Potato\Filter\Word;
+namespace Demand\Potato\Filter\Word;
 
-use Potato\Filter\Exception;
-use Potato\Filter\PregReplace;
+use Demand\Potato\Filter\Exception;
+use Demand\Potato\Filter\PregReplace;
 
 abstract class AbstractSeparator extends PregReplace
 {

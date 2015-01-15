@@ -5,7 +5,7 @@
  * Client class is based on Basement written by Michael Nitschinger.
  *
  */
-namespace Potato;
+namespace Demand\Potato;
 
 /**
  * The `Client`class is your main entry point when working with your Couchbase cluster.
@@ -37,7 +37,7 @@ class Client {
             'bucket' => 'default',
             'password' => '',
             'username' => '',
-            'class' => 'Potato\Document',
+            'class' => 'Demand\Potato\Document',
             'persist' => false,
             'connect' => true,
             'transcoder' => 'json',
@@ -66,50 +66,65 @@ class Client {
     /**
      * Read or set a transcoder.
      */
-    public function transcoder($name = null, $transcoder = array()) {
-        if($name == null) {
-            return $this->transcoders;
-        } elseif(empty($transcoder) && isset($this->transcoders[$name])) {
-            return $this->transcoders[$name];
-        } elseif(empty($transcoder)) {
-            return false;
-        }
-        if(!isset($transcoder['encode']) || !isset($transcoder['decode']) ||
-            !is_callable($transcoder['encode']) || !is_callable($transcoder['decode'])) {
-            $msg = "A transcoder must provide 'encode' and 'decode' callable functions";
-            throw new InvalidArgumentException($msg);
-        }
-        $this->transcoders[$name] = $transcoder;
-    }
+//    public function transcoder($name = null, $transcoder = array()) {
+//        if($name == null) {
+//            return $this->transcoders;
+//        } elseif(empty($transcoder) && isset($this->transcoders[$name])) {
+//            return $this->transcoders[$name];
+//        } elseif(empty($transcoder)) {
+//            return false;
+//        }
+//        if(!isset($transcoder['encode']) || !isset($transcoder['decode']) ||
+//            !is_callable($transcoder['encode']) || !is_callable($transcoder['decode'])) {
+//            $msg = "A transcoder must provide 'encode' and 'decode' callable functions";
+//            throw new InvalidArgumentException($msg);
+//        }
+//        $this->transcoders[$name] = $transcoder;
+//    }
 
     /**
      * Disconnect the current connection.
      */
-    public function disconnect() {
+//    public function disconnect() {
 //        $this->connection = null;
 //        unset(static::$connections[$this->config['name']]);
 //        return true;
-    }
+//    }
+
     /**
      * Returns the sate of the connection.
      */
-    public function connected() {
-        return $this->connection !== null;
-    }
+//    public function connected() {
+//        return $this->connection !== null;
+//    }
+
     /**
      * Returns the connection resource if connected.
      */
-    public function connection() {
-        return $this->connected() ? $this->connection : false;
-    }
+//    public function connection() {
+//        return $this->connected() ? $this->connection : false;
+//    }
 
     public function fetchDocument($id, array $options = array())
     {
         $options = $options + $this->config;
         $result = $this->bucket->get($id);
         $clazz = $options['class'];
+        /** @var Document $doc */
         $doc = new $clazz($id,$result->value);
         $doc->setCas($result->cas);
         return $doc;
+    }
+
+    /**
+     * @param Document $doc
+     * @param array $options
+     * @return mixed
+     */
+    public function saveDocument(Document $doc, array $options = array())
+    {
+        $id = $doc->getKey();
+        $response = $this->bucket->upsert($id,$doc->toJson(),$options);
+        return $response;
     }
 }

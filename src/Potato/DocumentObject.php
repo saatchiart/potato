@@ -1,11 +1,11 @@
 <?php
 
-namespace Potato;
+namespace Demand\Potato;
 
-use Potato\Filter\Filter;
-use Potato\Filter\FilterChain;
-use Potato\Filter\StringToLower;
-use Potato\Filter\Word\CamelCaseToUnderscore;
+use Demand\Potato\Filter\Filter;
+use Demand\Potato\Filter\FilterChain;
+use Demand\Potato\Filter\StringToLower;
+use Demand\Potato\Filter\Word\CamelCaseToUnderscore;
 
 class DocumentObject extends Object
 {

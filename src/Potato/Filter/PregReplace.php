@@ -1,13 +1,13 @@
 <?php
 
-namespace Potato\Filter;
+namespace Demand\Potato\Filter;
 
 /**
  * Class Regex
  *
  * Replace value based upon a set regex pattern.
  *
- * @package Potato\Filter
+ * @package Demand\Potato\Filter
  */
 class PregReplace extends AbstractFilter
 {

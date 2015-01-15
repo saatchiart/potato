@@ -1,6 +1,6 @@
 <?php
 
-namespace Potato\Filter;
+namespace Demand\Potato\Filter;
 
 class NoFilter implements Filter
 {

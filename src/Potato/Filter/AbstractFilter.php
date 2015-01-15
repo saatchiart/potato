@@ -1,6 +1,6 @@
 <?php
 
-namespace Potato\Filter;
+namespace Demand\Potato\Filter;
 
 abstract class AbstractFilter implements Filter
 {

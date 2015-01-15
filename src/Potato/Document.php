@@ -1,6 +1,6 @@
 <?php
 
-namespace Potato;
+namespace Demand\Potato;
 
 class Document extends DocumentObject
 {

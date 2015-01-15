@@ -1,6 +1,6 @@
 <?php
 
-namespace Potato\Filter\Word;
+namespace Demand\Potato\Filter\Word;
 
 class CamelCaseToSeparator extends AbstractSeparator
 {

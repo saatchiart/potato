@@ -1,6 +1,22 @@
 <?php
 
-$loader = require 'vendor/autoload.php';
+$loader = require dirname(__DIR__) . '/vendor/autoload.php';
+
+class UserAttribute extends \Demand\Potato\Document
+{
+    public function __construct($key,$data)
+    {
+        $valueTypes = array(
+            'is_safe' => 'bool',
+            'other_attributes' => array(
+                'email_open_count' => 'int',
+                'email_click_count' => 'int'
+            ),
+            'prevent_from_selling_art' => 'bool',
+        );
+        parent::__construct($key,$data,$valueTypes);
+    }
+}
 
 function logMsg($msg)
 {
@@ -16,14 +32,7 @@ function logMsg($msg)
     }
 }
 
-$valueTypes = array(
-    'is_safe' => 'bool',
-    'other_attributes' => array(
-        'email_open_count' => 'int',
-        'email_click_count' => 'int'
-    ),
-    'prevent_from_selling_art' => 'bool',
-);
+
 
 $content_str = <<<EOD
 {
@@ -44,7 +53,7 @@ $content_str = <<<EOD
 EOD;
 
 logMsg('begin processing');
-$doc = new Potato\Document('344780', $content_str, $valueTypes);
+$doc = new Demand\Potato\Document('344780', $content_str, $valueTypes);
 logMsg('the document object');
 logMsg($doc);
 // test key

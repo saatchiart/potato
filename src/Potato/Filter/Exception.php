@@ -1,8 +1,8 @@
 <?php
 
-namespace Potato\Filter;
+namespace Demand\Potato\Filter;
 
-class Exception extends \Potato\Exception
+class Exception extends \Demand\Potato\Exception
 {
 
 }

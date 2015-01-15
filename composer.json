@@ -1,7 +1,7 @@
 {
-    "name": "mshindle/potato",
+    "name": "saatchiart/potato",
     "description": "A simple ODM for couchbase",
-    "homepage": "http://github.com/mshindle/potato",
+    "homepage": "http://github.com/saatchiart/potato",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -18,6 +18,6 @@
         "phpunit/phpunit": "~4.4"
     },
     "autoload": {
-        "psr-4": { "Potato\\": "src/Potato" }
+        "psr-4": { "Demand\\Potato\\": "src/Potato/" }
     }
 }
