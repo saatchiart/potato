@@ -72,7 +72,7 @@ class FilterChain implements Filter
     public function filter($value)
     {
         $valueFiltered = $value;
-        foreach ($this->filters as $filter) {
+        foreach ($this->filters as &$filter) {
             $valueFiltered = $filter->filter($valueFiltered);
         }
         return $valueFiltered;
