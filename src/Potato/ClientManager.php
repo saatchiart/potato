@@ -47,19 +47,24 @@ class ClientManager
         $this->defaults = array_merge($this->defaults,$defaults);
     }
 
-    public function getClient($name, $options = array())
+    public function client($bucket = null, $options = array())
     {
+        // if bucket is null, assume default
+        if ($bucket === null) {
+            $bucket = $this->defaults['bucket'];
+        }
         // make sure our arg is valid
-        if (!is_string($name))
+        if (!is_string($bucket)) {
             throw new \InvalidArgumentException('$name must be specified and a string.');
+        }
         // if we have it, return it
-        if (array_key_exists($name,$this->clients)) {
-            return $this->clients[$name];
+        if (array_key_exists($bucket,$this->clients)) {
+            return $this->clients[$bucket];
         }
         // looks like we need to make the connection
         $config = $options + $this->defaults;
-        // make sure the name we pass to client is the same as the one we will use.
-        if ($config['name'] != $name) $config['name'] = $name;
+        // make sure our bucket config is correct
+        $config['bucket'] = $bucket;
         $this->clients['name'] = new Client($config);
         return $this->clients['name'];
     }
