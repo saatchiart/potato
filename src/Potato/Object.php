@@ -63,7 +63,7 @@ class Object implements \ArrayAccess
 
     public function offsetUnset($k)
     {
-        unset($this->$k);
+        unset($this->_values[$k]);
     }
 
     public function offsetGet($k)

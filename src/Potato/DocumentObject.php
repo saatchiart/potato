@@ -90,6 +90,16 @@ class DocumentObject extends Object
 
     /**
      * @param string $key
+     * @throws Exception
+     */
+    public function __unset($key)
+    {
+        $key = $this->normalizeKey($key);
+        parent::__unset($key);
+    }
+
+    /**
+     * @param string $key
      * @return string
      * @throws Exception
      */
