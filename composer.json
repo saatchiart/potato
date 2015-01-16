@@ -1,5 +1,5 @@
 {
-    "name": "saatchiart/potato",
+    "name": "demand/potato",
     "description": "A simple ODM for couchbase",
     "homepage": "http://github.com/saatchiart/potato",
     "type": "library",
