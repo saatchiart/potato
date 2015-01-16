@@ -4,6 +4,7 @@ namespace Demand\Potato;
 
 class Object implements \ArrayAccess
 {
+    /** @var array */
     protected $_values;
 
     public function __construct($fields=null)
