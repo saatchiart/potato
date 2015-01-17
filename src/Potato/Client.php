@@ -9,9 +9,12 @@ namespace Demand\Potato;
 
 /**
  * The `Client`class is your main entry point when working with your Couchbase cluster.
-  */
-class Client {
-
+ *
+ * TODO: Handle fetching multiple ids at one time
+ * TODO: Offer include_docs functionality in view query results
+ */
+class Client
+{
     /**
      * Holds the current config.
      * @var array
@@ -60,50 +63,20 @@ class Client {
     /**
      * Returns the current configuration.
      */
-    public function getConfig() {
+    public function getConfig()
+    {
         return $this->config;
     }
-    /**
-     * Read or set a transcoder.
-     */
-//    public function transcoder($name = null, $transcoder = array()) {
-//        if($name == null) {
-//            return $this->transcoders;
-//        } elseif(empty($transcoder) && isset($this->transcoders[$name])) {
-//            return $this->transcoders[$name];
-//        } elseif(empty($transcoder)) {
-//            return false;
-//        }
-//        if(!isset($transcoder['encode']) || !isset($transcoder['decode']) ||
-//            !is_callable($transcoder['encode']) || !is_callable($transcoder['decode'])) {
-//            $msg = "A transcoder must provide 'encode' and 'decode' callable functions";
-//            throw new InvalidArgumentException($msg);
-//        }
-//        $this->transcoders[$name] = $transcoder;
-//    }
 
     /**
-     * Disconnect the current connection.
+     * Return the underlying couchbase bucket.
+     *
+     * @return \CouchbaseBucket
      */
-//    public function disconnect() {
-//        $this->connection = null;
-//        unset(static::$connections[$this->config['name']]);
-//        return true;
-//    }
-
-    /**
-     * Returns the sate of the connection.
-     */
-//    public function connected() {
-//        return $this->connection !== null;
-//    }
-
-    /**
-     * Returns the connection resource if connected.
-     */
-//    public function connection() {
-//        return $this->connected() ? $this->connection : false;
-//    }
+    public function getBucket()
+    {
+        return $this->bucket;
+    }
 
     public function fetchDocument($id, array $options = array())
     {
@@ -126,5 +99,43 @@ class Client {
         $id = $doc->getKey();
         $response = $this->bucket->upsert($id,$doc->toJson(),$options);
         return $response;
+    }
+
+    /**
+     * Creates a new ViewQuery instance for performing a view query.
+     *
+     * @param string $designDoc The name of the design document to query.
+     * @param string $name The name of the view.
+     * @param array $options Custom options to be set.
+     * @return ViewQuery
+     */
+    public function createViewQuery($designDoc, $name, $options = array())
+    {
+        $query = ViewQuery::from($designDoc,$name);
+        $query->custom($options);
+        return $query;
+    }
+
+    /**
+     * @param string $designDoc
+     * @param string $name
+     * @param array $options
+     * @return ViewQuery
+     */
+    public function createSpatialQuery($designDoc, $name, $options = array())
+    {
+        $query = ViewQuery::fromSpatial($designDoc,$name);
+        $query->custom($options);
+        return $query;
+    }
+
+    /**
+     * Execute a view or spatial query.
+     *
+     * @param mixed $query
+     */
+    public function query($query)
+    {
+        return $this->bucket->query($query);
     }
 }
