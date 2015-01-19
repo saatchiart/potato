@@ -78,15 +78,19 @@ class Client
         return $this->bucket;
     }
 
-    public function fetchDocument($id, array $options = array())
+    public function fetchDocument($ids, array $options = array())
     {
         $options = $options + $this->config;
-        $result = $this->bucket->get($id);
-        $clazz = $options['class'];
-        /** @var Document $doc */
-        $doc = new $clazz($id,$result->value);
-        $doc->setCas($result->cas);
-        return $doc;
+        $response = $this->bucket->get($ids);
+        if (is_array($response)) {
+            $docs = array();
+            foreach ($response as $id => $result) {
+                $docs[] = $this->hydrate($id,$result,$options);
+            }
+            return $docs;
+        } else {
+            return $this->hydrate($ids,$response,$options);
+        }
     }
 
     /**
@@ -137,5 +141,19 @@ class Client
     public function query($query)
     {
         return $this->bucket->query($query);
+    }
+
+    /**
+     * @param string $id
+     * @param \CouchbaseMetaDoc $result
+     * @param array $option
+     */
+    private function hydrate($id,$result,&$options)
+    {
+        $clazz = $options['class'];
+        /** @var Document $doc */
+        $doc = new $clazz($id,$result->value);
+        $doc->setCas($result->cas);
+        return $doc;
     }
 }
