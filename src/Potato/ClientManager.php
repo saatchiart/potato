@@ -47,6 +47,11 @@ class ClientManager
         $this->defaults = array_merge($this->defaults,$defaults);
     }
 
+    /**
+     * @param string $bucket
+     * @param array $options
+     * @return Client
+     */
     public function client($bucket = null, $options = array())
     {
         // if bucket is null, assume default

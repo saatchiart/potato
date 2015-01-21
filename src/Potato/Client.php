@@ -78,6 +78,11 @@ class Client
         return $this->bucket;
     }
 
+    /**
+     * @param array|string $ids
+     * @param array $options
+     * @return array|Document
+     */
     public function fetchDocument($ids, array $options = array())
     {
         $options = $options + $this->config;
