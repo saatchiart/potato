@@ -24,7 +24,7 @@ class Client
     /** @var \CouchbaseCluster */
     private $cluster;
     /** @var \CouchbaseBucket */
-    private $bucket;
+    private $bucket = null;
 
     /**
      * Create and connect to the Couchbase cluster.
@@ -57,7 +57,6 @@ class Client
     public function init()
     {
         $this->cluster = new \CouchbaseCluster($this->config['uri'],$this->config['username'],$this->config['password']);
-        $this->bucket = $this->cluster->openBucket($this->config['bucket']);
     }
 
     /**
@@ -75,6 +74,9 @@ class Client
      */
     public function getBucket()
     {
+        if ($this->bucket === null) {
+            $this->bucket = $this->cluster->openBucket($this->config['bucket']);
+        }
         return $this->bucket;
     }
 
@@ -86,7 +88,7 @@ class Client
     public function fetchDocument($ids, array $options = array())
     {
         $options = $options + $this->config;
-        $response = $this->bucket->get($ids);
+        $response = $this->getBucket()->get($ids);
         if (is_array($response)) {
             $docs = array();
             foreach ($response as $id => $result) {
@@ -106,7 +108,7 @@ class Client
     public function saveDocument(Document $doc, array $options = array())
     {
         $id = $doc->getKey();
-        $response = $this->bucket->upsert($id,$doc->toJson(),$options);
+        $response = $this->getBucket()->upsert($id,$doc->toJson(),$options);
         return $response;
     }
 
@@ -145,7 +147,7 @@ class Client
      */
     public function query($query)
     {
-        return $this->bucket->query($query);
+        return $this->getBucket()->query($query);
     }
 
     /**
