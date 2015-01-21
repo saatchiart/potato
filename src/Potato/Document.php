@@ -5,10 +5,10 @@ namespace Demand\Potato;
 class Document extends DocumentObject
 {
     /**
-     * The unique key of the document.
+     * The unique id of the document.
      * @var string
      */
-    private $key;
+    private $id;
 
     /**
      * Contains the CAS value for the document if there is one.
@@ -16,19 +16,14 @@ class Document extends DocumentObject
      */
     private $cas = null;
 
-    /**
-     * The value when populated from a view result.
-     */
-    private $value = null;
-
-    public function __construct($key, $data, $valueTypes = array())
+    public function __construct($id, $data, $valueTypes = array())
     {
-        $this->key = strval($key);
+        $this->id = strval($id);
         parent::__construct($data,$valueTypes);
     }
 
-    public function getKey() {
-        return $this->key;
+    public function getId() {
+        return $this->id;
     }
 
     /**
@@ -46,22 +41,4 @@ class Document extends DocumentObject
     {
         $this->cas = $cas;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
-    }
-
-    /**
-     * @param mixed $value
-     */
-    public function setValue($value)
-    {
-        $this->value = $value;
-    }
-
-
 }
