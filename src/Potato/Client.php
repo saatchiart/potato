@@ -107,7 +107,7 @@ class Client
      */
     public function saveDocument(Document $doc, array $options = array())
     {
-        $id = $doc->getKey();
+        $id = $doc->getId();
         $response = $this->getBucket()->upsert($id,$doc->toJson(),$options);
         return $response;
     }
