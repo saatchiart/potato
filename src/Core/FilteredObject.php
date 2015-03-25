@@ -1,13 +1,13 @@
 <?php
 
-namespace Demand\Potato;
+namespace Demand\Core;
 
-use Demand\Potato\Filter\Filter;
-use Demand\Potato\Filter\FilterChain;
-use Demand\Potato\Filter\StringToLower;
-use Demand\Potato\Filter\Word\CamelCaseToUnderscore;
+use Demand\Filter\Filter;
+use Demand\Filter\FilterChain;
+use Demand\Filter\StringToLower;
+use Demand\Filter\Word\CamelCaseToUnderscore;
 
-class DocumentObject extends Object
+class FilteredObject extends Object
 {
     /**
      * An array describing the value types of an object
@@ -56,7 +56,7 @@ class DocumentObject extends Object
         foreach ($arr as $k => $v) {
             if (is_array($v) && $this->isAssoc($v)) {
                 $vt = (array_key_exists($k, $valueTypes)) ? $valueTypes[$k] : array();
-                $arr[$k] = new DocumentObject($v,$vt,$this->keyFilter);
+                $arr[$k] = new FilteredObject($v,$vt,$this->keyFilter);
             }
         }
         parent::__construct($arr);
@@ -81,7 +81,7 @@ class DocumentObject extends Object
         $key = $this->normalizeKey($key);
         if (is_array($value) && $this->isAssoc($value)) {
             $vt = (array_key_exists($key, $this->valueTypes)) ? $this->valueTypes[$key] : array();
-            $value = new DocumentObject($value, $vt, $this->keyFilter);
+            $value = new FilteredObject($value, $vt, $this->keyFilter);
         } elseif (array_key_exists($key, $this->valueTypes) && is_string($this->valueTypes[$key])) {
             settype($value, $this->valueTypes[$key]);
         }

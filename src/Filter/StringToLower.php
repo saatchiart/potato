@@ -1,6 +1,6 @@
 <?php
 
-namespace Demand\Potato\Filter;
+namespace Demand\Filter;
 
 class StringToLower extends AbstractFilter
 {
