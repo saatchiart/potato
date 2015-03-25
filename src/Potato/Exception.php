@@ -2,7 +2,7 @@
 
 namespace Demand\Potato;
 
-class Exception extends \Exception
+class Exception extends \Demand\Core\Exception
 {
 
 }

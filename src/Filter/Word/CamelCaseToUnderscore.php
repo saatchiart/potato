@@ -1,6 +1,6 @@
 <?php
 
-namespace Demand\Potato\Filter\Word;
+namespace Demand\Filter\Word;
 
 class CamelCaseToUnderscore extends CamelCaseToSeparator
 {

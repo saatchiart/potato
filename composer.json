@@ -1,5 +1,6 @@
 {
     "name": "demand/potato",
+    "version": "0.10.0",
     "description": "A simple ODM for couchbase",
     "homepage": "http://github.com/saatchiart/potato",
     "type": "library",
@@ -18,6 +19,10 @@
         "phpunit/phpunit": "~4.4"
     },
     "autoload": {
-        "psr-4": { "Demand\\Potato\\": "src/Potato/" }
+        "psr-4": {
+            "Demand\\Potato\\": "src/Potato/",
+            "Demand\\Core\\": "src/Core/",
+            "Demand\\Filter\\": "src/Filter/"
+        }
     }
 }

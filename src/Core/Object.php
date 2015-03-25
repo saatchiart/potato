@@ -1,6 +1,6 @@
 <?php
 
-namespace Demand\Potato;
+namespace Demand\Core;
 
 class Object implements \ArrayAccess
 {

@@ -2,7 +2,9 @@
 
 namespace Demand\Potato;
 
-class Document extends DocumentObject
+use Demand\Core\FilteredObject;
+
+class Document extends FilteredObject
 {
     /**
      * The unique id of the document.
