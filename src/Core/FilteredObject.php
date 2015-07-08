@@ -59,7 +59,7 @@ class FilteredObject extends Object
                     $vt = (array_key_exists($k, $valueTypes)) ? $valueTypes[$k] : array();
                     $arr[$k] = new FilteredObject($v, $vt, $this->keyFilter);
                 } else {
-                    $arr[$k] = array_filter($v,function($elem) { return new FilteredObject($elem,null,$this->keyFilter); });
+                    $arr[$k] = array_map(array($this,'mapArrayElements'),$v);
                 }
             }
         }
@@ -119,6 +119,14 @@ class FilteredObject extends Object
     {
         $key = $this->normalizeKey($key);
         return array_key_exists($key,$this->_values);
+    }
+
+    protected function mapArrayElements($elem)
+    {
+        if (!is_array($elem) && !(is_object($elem) && get_class($elem) == "stdClass")) {
+            return $elem;
+        }
+        return new FilteredObject($elem,array(),$this->keyFilter);
     }
 
     /**
