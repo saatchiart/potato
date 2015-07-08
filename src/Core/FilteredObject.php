@@ -54,9 +54,13 @@ class FilteredObject extends Object
             throw new Exception('Data type must be either JSON string or stdClass: ' . print_r($data, true));
         }
         foreach ($arr as $k => $v) {
-            if (is_array($v) && $this->isAssoc($v)) {
-                $vt = (array_key_exists($k, $valueTypes)) ? $valueTypes[$k] : array();
-                $arr[$k] = new FilteredObject($v,$vt,$this->keyFilter);
+            if (is_array($v)) {
+                if ($this->isAssoc($v)) {
+                    $vt = (array_key_exists($k, $valueTypes)) ? $valueTypes[$k] : array();
+                    $arr[$k] = new FilteredObject($v, $vt, $this->keyFilter);
+                } else {
+                    $arr[$k] = array_filter($v,function($elem) { return new FilteredObject($elem,null,$this->keyFilter); });
+                }
             }
         }
         parent::__construct($arr);
