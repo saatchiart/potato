@@ -1,8 +1,10 @@
 <?php
 
 namespace Demand\Core;
+use JsonSerializable;
+use ArrayAccess;
 
-class Object implements \ArrayAccess
+class Object implements ArrayAccess, JsonSerializable
 {
     /** @var array */
     protected $_values;
@@ -92,6 +94,10 @@ class Object implements \ArrayAccess
             return json_encode($this->toArray(true));
     }
 
+    public function jsonSerialize()
+    {
+        return $this->toArray(true);
+    }
     public function toString()
     {
         return $this->toJson();
