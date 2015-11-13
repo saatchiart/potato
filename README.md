@@ -13,3 +13,11 @@ _0.10.0_
  * Rename DocumentObject to FilteredObject as the main goal of the class is to apply filtering to keys and ensure
  attached objects are treated as objects versus array.
  
+Session Handler
+===============
+
+
+$client = ClientManager::getInstance()->client('session_bucket');
+$handler = new SessionHandler($client,1800);
+session_set_save_handler($handler,true);
+session_start();
