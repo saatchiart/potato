@@ -20,9 +20,9 @@
     },
     "autoload": {
         "psr-4": {
-            "Demand\\Potato\\": "src/Potato/",
-            "Demand\\Core\\": "src/Core/",
-            "Demand\\Filter\\": "src/Filter/"
+            "Demand\\Core\\": "src/Demand/Core/",
+            "Demand\\Filter\\": "src/Demand/Filter/",
+            "Demand\\Potato\\": "src/Demand/Potato/"
         }
     }
 }
