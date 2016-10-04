@@ -21,9 +21,9 @@ class Client
      */
     private $config;
 
-    /** @var \CouchbaseCluster */
-    private $cluster;
-    /** @var \CouchbaseBucket */
+    /** @var \CouchbaseCluster|null */
+    private $cluster = null;
+    /** @var \CouchbaseBucket|null */
     private $bucket = null;
 
     /**
@@ -32,8 +32,11 @@ class Client
      * If no user is provided (or is null), then it is assumed to be the same
      * name as the bucket. This is the common behavior and seldom needs to be
      * changed.
+     *
+     * @param array $options (default: array()) config options
      */
-    public function __construct($options = array()) {
+    public function __construct($options = array())
+    {
         $defaults = array(
             'name' => null,
             'uri' => 'http://127.0.0.1:8091',
@@ -44,10 +47,17 @@ class Client
             'persist' => false,
             'connect' => true,
             'transcoder' => 'json',
-            'environment' => 'development'
+            'environment' => 'development',
+            'cluster' => null,
+            'hydrate' => true
         );
         $this->config = $options + $defaults;
         $this->config['name'] = $this->config['name'] ?: $this->config['bucket'];
+
+        // allow injecting a cluster, otherwise one will be created for you in init.
+        if ($this->config['cluster']) {
+            $this->cluster = $this->config['cluster'];
+        }
         $this->init();
     }
 
@@ -56,7 +66,9 @@ class Client
      */
     public function init()
     {
-        $this->cluster = new \CouchbaseCluster($this->config['uri'],$this->config['username'],$this->config['password']);
+        if (!$this->cluster) {
+            $this->cluster = new \CouchbaseCluster($this->config['uri'],$this->config['username'],$this->config['password']);
+        }
     }
 
     /**
@@ -83,7 +95,9 @@ class Client
     /**
      * @param array|string $ids
      * @param array $options
-     * @return array|Document
+     * @return Document[]|Document|\CouchbaseMetaDoc[]|\CouchbaseMetaDoc
+     * Depending on whether you're fetching multiple ids and whether hydration
+     * is enabled
      */
     public function fetchDocument($ids, array $options = array())
     {
@@ -92,11 +106,15 @@ class Client
         if (is_array($response)) {
             $docs = array();
             foreach ($response as $id => $result) {
-                $docs[] = $this->hydrate($id,$result,$options);
+                $docs[] = $options['hydrate'] ?
+                    $this->hydrate($id,$result,$options) :
+                    $result;
             }
             return $docs;
         } else {
-            return $this->hydrate($ids,$response,$options);
+            return $options['hydrate'] ?
+                $this->hydrate($ids,$response,$options) :
+                $response;
         }
     }
 
