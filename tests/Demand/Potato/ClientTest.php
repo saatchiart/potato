@@ -39,7 +39,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         // mock dependencies
         $this->cluster = $this->prophesize(CouchbaseCluster::class);
         // instantiate class under test
-        $this->client = new Client([], $this->cluster->reveal());
+        $this->client = new Client(['cluster' => $this->cluster->reveal()]);
     }
 
     public function testFetchDocumentWithHydrationDisabled()

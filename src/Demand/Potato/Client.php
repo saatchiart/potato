@@ -34,13 +34,9 @@ class Client
      * changed.
      *
      * @param array $options (default: array()) config options
-     * @param \CouchbaseCluster|null $couchbaseCluster (default: null) Optional
-     * couchbase cluster to use, else one will be initialized for you
      */
-    public function __construct(
-        $options = array(),
-        \CouchbaseCluster $cluster = null
-    ) {
+    public function __construct($options = array())
+    {
         $defaults = array(
             'name' => null,
             'uri' => 'http://127.0.0.1:8091',
@@ -52,12 +48,15 @@ class Client
             'connect' => true,
             'transcoder' => 'json',
             'environment' => 'development',
+            'cluster' => null,
             'hydrate' => true
         );
         $this->config = $options + $defaults;
         $this->config['name'] = $this->config['name'] ?: $this->config['bucket'];
-        if ($cluster) {
-            $this->cluster = $cluster;
+
+        // allow injecting a cluster, otherwise one will be created for you in init.
+        if ($this->config['cluster']) {
+            $this->cluster = $this->config['cluster'];
         }
         $this->init();
     }
