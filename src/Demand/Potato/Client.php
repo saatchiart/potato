@@ -103,18 +103,18 @@ class Client
     {
         $options = $options + $this->config;
         $response = $this->getBucket()->get($ids);
+        if (!$options['hydrate']) {
+            return $response;
+        }
         if (is_array($response)) {
             $docs = array();
             foreach ($response as $id => $result) {
-                $docs[] = $options['hydrate'] ?
-                    $this->hydrate($id,$result,$options) :
-                    $result;
+                $docs[] = $this->hydrate($id, $result, $options);
             }
+
             return $docs;
         } else {
-            return $options['hydrate'] ?
-                $this->hydrate($ids,$response,$options) :
-                $response;
+            return $this->hydrate($ids,$response,$options);
         }
     }
 

@@ -68,7 +68,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->cluster->openBucket('default')->willReturn($bucket->reveal());
         // it should get a response
         $response = $this->prophesize(CouchbaseMetaDoc::class);
-        $expected = [$response->reveal()];
+        $expected = [$ids[0] => $response->reveal()];
         $bucket->get($ids)->willReturn($expected);
         // multiple assoc arrays should be returned
         // call and verify
