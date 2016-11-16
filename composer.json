@@ -1,6 +1,6 @@
 {
     "name": "demand/potato",
-    "version": "0.13.0",
+    "version": "0.14.0",
     "description": "A simple ODM for couchbase",
     "homepage": "http://github.com/saatchiart/potato",
     "type": "library",

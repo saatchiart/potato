@@ -75,4 +75,18 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $actual = $this->client->fetchDocument($ids, ['hydrate' => false]);
         $this->assertEquals($expected, $actual);
     }
+
+    public function testQuery()
+    {
+        // it should open a bucket
+        $bucket = $this->prophesize(CouchbaseBucket::class);
+        $this->cluster->openBucket('default')->willReturn($bucket->reveal());
+        // it should send the query and tell it to return an assoc array
+        $viewQuery = $this->prophesize(ViewQuery::class);
+        $expected = 'expected';
+        $bucket->query($viewQuery->reveal(), true)->willReturn($expected);
+        // call and verify
+        $actual = $this->client->query($viewQuery->reveal());
+        $this->assertEquals($expected, $actual);
+    }
 }
