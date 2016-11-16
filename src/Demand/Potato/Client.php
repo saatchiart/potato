@@ -165,7 +165,10 @@ class Client
      */
     public function query($query)
     {
-        return $this->getBucket()->query($query);
+        // in couchbase sdk 2.2.2, by default this will return an stdClass
+        // object rather than the previous assoc array. Passing true tells it
+        // to return an assoc array like it used to. Backward compatible.
+        return $this->getBucket()->query($query, true);
     }
 
     /**
